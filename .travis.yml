@@ -1,5 +1,5 @@
 env:
-- PROJECT_NAME=infinite_matrix PACKAGE_NAME=main
+- PROJECT_NAME=real_estate PACKAGE_NAME=main
 language: cpp
 dist: bionic
 before_script:
