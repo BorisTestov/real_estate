@@ -54,6 +54,7 @@ int main(int argc, char** argv)
         catch (std::exception& e)
         {
             std::cout << "Wrong input data! " << e.what() << std::endl;
+            continue;
         }
 
         if (!testFile.good())
