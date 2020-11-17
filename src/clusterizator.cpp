@@ -55,15 +55,15 @@ int main(int argc, char** argv)
     };
     std::cout << "Data received: total " << samples.size() << " samples" << std::endl;
     std::cout << "Clusterization (kkmeans)" << std::endl;
-    dlib::kcentroid<kernelType> kc(kernelType(0.0000001), 0.0000001, num_clusters);
+    dlib::kcentroid<kernelType> kc(kernelType(0.01), 0.01, num_clusters);
     dlib::kkmeans<kernelType> test(kc);
     std::vector<sampleType> initial_centers;
 
     test.set_number_of_centers(num_clusters);
     dlib::pick_initial_centers(num_clusters, initial_centers, samples, test.get_kernel());
-    test.train(samples, initial_centers);
+    test.train(samples, initial_centers, 1000);
 
-    std::vector<unsigned long> assignments = spectral_cluster(kernelType(0.0000001), samples, num_clusters);
+    std::vector<unsigned long> assignments = spectral_cluster(kernelType(0.01), samples, num_clusters);
     std::cout << "Saving clusters in files" << std::endl;
     saveClustersInFiles(samples, assignments, modelname, num_clusters);
     std::cout << "Clusters saved" << std::endl;
@@ -72,8 +72,9 @@ int main(int argc, char** argv)
     typeTrainer trainer;
 
     dlib::krr_trainer<kernelType> trainer_linear;
-    trainer_linear.set_kernel(kernelType(0.0000001));
+    trainer_linear.set_kernel(kernelType(0.01));
     trainer.set_trainer(trainer_linear);
+    trainer.be_verbose();
 
     std::vector<double> labels;
     std::copy(assignments.begin(), assignments.end(), back_inserter(labels));
